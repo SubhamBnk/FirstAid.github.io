@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>First Aid</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+     <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <ul>
+        <li><a class = "active" href="index.html">Home</a></li>
+        <li><a href="pet.html">Wellness</a></li>
+    </ul>
+	<div id = "container">
+	<h1>First Aid</h1>
+	<img src = "unnamed.png" style="height:100px;width:100px">
+	<h3>Please upload a photo of your burn.</h3>
+    <input type='file' accept='image/*' onchange='openFile(event)' />
+    <br/>
+    <br/>
+    <br/>
+    <div id="img-preview"></div>
+    <h2 id = "result"></h2>
+	</div>
+    <script type="text/javascript">
+        function openFile(file)
+        {
+        	var out = document.getElementById("result");
+        	out.innerHTML = "";
+            var input = file.target;
+            var reader = new FileReader();
+            reader.onload = function(){
+                var dataURL = reader.result;
+               
+
+                var parts = dataURL.split(';base64,');
+                var contentType = parts[0].split(':')[1];
+                var raw = window.atob(parts[1]);
+                var rawLength = raw.length;
+
+                var uInt8Array = new Uint8Array(rawLength);
+
+                for (var i = 0; i < rawLength; ++i) {
+                    uInt8Array[i] = raw.charCodeAt(i);
+                }
+
+                var imgContent = new Blob([uInt8Array], { type: contentType });
+
+                $.ajax({
+                    url: "https://eastus.api.cognitive.microsoft.com/customvision/v3.0/Prediction/b3a262f2-ee99-47c4-9cda-6bfd74b8041f/classify/iterations/Burn%20Classifier/image",
+                    
+                    beforeSend: function(xhrObj){
+                        // Request headers
+                        xhrObj.setRequestHeader("Prediction-Key","87fcdcfb94bf4a63999c52e0e36103a7");
+                        xhrObj.setRequestHeader("Content-Type","application/octet-stream");
+                    },
+                    type: "POST",
+                    data: imgContent,
+                    processData: false
+                })
+                .done(function(data) {
+                	var result = data["predictions"];
+                    var burn = result[0].tagName;
+                    var prob = result[0].probability * 100;
+                    prob = prob.toFixed(2);
+                    out.innerHTML = "There is a " + prob + "% chance that "
+                    if (burn == "First Degree Burn")
+                      out.innerHTML += "you have a first degree burn.";
+                    if (burn == "Second Degree Burn")
+                      out.innerHTML += "you have a second degree burn.";
+                    if (burn == "Third Degree Burns")
+                      out.innerHTML += "you have a third degree burn.";
+                })
+                .fail(function() {
+                	console.log("error")
+                    out.innerHTML = "Unable to classify image."; 
+                });
+            };
+
+            reader.readAsDataURL(input.files[0]);
+            
+            const imgPreview = document.getElementById("img-preview");
+            reader.addEventListener("load", function () {
+            imgPreview.style.display = "block";
+            imgPreview.innerHTML = '<img style="height:300px;width:300px" src="' + this.result + '" />';
+            });
+        };
+    </script>
+   <script>
+  window.watsonAssistantChatOptions = {
+      integrationID: "72318a88-dd3e-4f4a-9319-72f1765361e0", // The ID of this integration.
+      region: "us-east", // The region your integration is hosted in.
+      serviceInstanceID: "74cd3fc0-70df-4586-8572-7a5591c4b68b", // The ID of your service instance.
+	   openChatByDefault:true,
+      onLoad: function(instance) { instance.render(); }
+    };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js"
+    document.head.appendChild(t);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="pet.css">
+  </head>
+  <body>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a class="active" href="pet.html">Wellness</a></li>
+    </ul>
+    <div class="text-center" id = "banner">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="#pet"><a href="#pet">Pet Therapy</a></button>
+          <button type="button" class="#draw"><a href="#draw">Art Therapy</a></button>
+          <button type="button" class="#journal"><a href="#journal">Journal</a></button>
+          <button type="button" class="#affirmations"><a href="#affirmations">Positive Affirmations</a></button>
+        </div>
+        </div>
+    <div id = "pet">
+        <h1 style="color:deeppink">Pet Therapy</h1>
+        <p style="color:deeppink"> Ask  Who's a good boy to these furry friends.</p>
+        <img id="image" src="1_before.jpg"/>
+        <br/>
+        <button id="pet_1" onclick = "changeImage()">Who's a good boy?</button>
+        <button id="next" onclick="NextPet()">Next Pet</button>
+    </div>
+     <!-- drawing web app -->
+     <div id="draw" style="background-color: rgb(204, 250, 225);">
+        <h1 class="text-center" style="color:green">Art Therapy</h1>
+        <p class="text-center" style="color:green">Doodle on the canvas below to relieve stress.</p>
+        <iframe src="https://paintz.app/" style="width: 800px; height: 600px; margin: 0 auto; display: block;"></iframe>
+      </div>     
+      <!-- Journal-->
+    <div id="journal">
+        <h1 class="text-center" style="color:peru">Journal</h1>
+        <h5 style="color:peru">American Counseling Association recommends an effective way to rid oneself of negative thoughts: Writing and deleting them. The physical act of gettting rid of thoughts allows the mind to move on to other things.</h5>
+        <textarea id="Entry" cols="40" rows="5" style="width: 800px; height: 400px; margin: 0 auto; display: block;"></textarea>
+        <br/>
+        <button id="erase" onclick="Erase()">Erase Stressful Memory</button>
+    </div>    
+    <!-- Positive Affirmations-->
+    <div id = "affirmations" class= "text-center" style="background-color: rgb(185, 226, 238);">
+        <h1 class="text-center">Positive Affirmations</h1>
+         <h5 style="color:darkblue">The words we speak to ourselves matter. Positive affirmations can help build confidence, and break through limiting beliefs.</h5>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/Rj9TY7ftg6Q" title="YouTube video player" frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="pet.js"></script>
+  </body>
+</html>
